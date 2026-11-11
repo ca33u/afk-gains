@@ -418,7 +418,7 @@ local function BuildToast()
 	toast.close:SetPoint("TOPRIGHT", -2, -2)
 	toast.close:SetScript("OnClick", function()
 		if toast.key and C.byKey[toast.key] then
-			C.Snooze(toast.key, Now())
+			U.Later(toast.key)
 		end
 		toast:Hide()
 	end)
@@ -468,7 +468,7 @@ function U.ShowToast(key)
 		Fill(key, q.icon, T(text[1]), T(text[2]), {
 			{ T("Start"), function() U.Guide(key) end },
 			{ T("Later"), function()
-				C.Snooze(key, Now())
+				U.Later(key)
 				toast:Hide()
 			end },
 			-- the hero sits by the fire and the breathing starts
@@ -490,7 +490,7 @@ function U.ShowToast(key)
 	Fill(key, q.icon, T(text[1]), hint or T(text[2]), {
 		{ T("Done"), Done },
 		{ T("Later"), function()
-			C.Snooze(key, Now())
+			U.Later(key)
 			toast:Hide()
 		end },
 		-- the hero sits by the fire while you go and do it; a countdown shows
@@ -530,7 +530,7 @@ function U.Countdown(key, done)
 		end },
 		{ T("Later"), function()
 			Stop()
-			C.Snooze(key, Now())
+			U.Later(key)
 			toast:Hide()
 		end },
 	})
@@ -675,9 +675,15 @@ function U.Complete(key)
 	U.RefreshAll()
 end
 
--- Shows the first quest in `keys` unless busy or a toast is up.
+-- "Later": every reminder goes quiet for a while (longer each time in a row).
+function U.Later(key)
+	local m = C.Later(key, Now())
+	print(P .. string.format(T("Reminders quiet for %d min."), m))
+end
+
+-- Shows the first quest in `keys` unless busy, quiet or a toast is up.
 function U.Offer(keys)
-	if not keys[1] or Busy() or (toast and toast:IsShown()) then
+	if not keys[1] or Busy() or C.Quiet(Now()) or (toast and toast:IsShown()) then
 		return false
 	end
 	U.ShowToast(keys[1])

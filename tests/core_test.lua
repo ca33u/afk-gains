@@ -163,4 +163,16 @@ Check(STP.Format(12345) == "12 345" and STP.Format(999) == "999", "steps formatt
 function UnitOnTaxi() return true end
 Check(STP.OnFoot() == false, "flights do not count")
 UnitOnTaxi = nil
+NOW = NOW + 10 * 3600
+HOUR = 12
+-- "Later": everything goes quiet, longer each time in a row
+Check(not C.Quiet(NOW), "not quiet before any Later")
+Check(C.Later("stand", NOW) == 20 and C.Quiet(NOW + 19 * 60) and not C.Quiet(NOW + 21 * 60), "later: all reminders quiet 20 min")
+Check(not Has(C.Soon(NOW, 15), "stand"), "a quest put off is not brought forward at a pause")
+Check(C.Later("water", NOW) == 40 and C.Later("water", NOW) == 60 and C.Later("water", NOW) == 60, "later in a row: 40, then an hour at most")
+NOW = NOW + 61 * 60
+C.Complete("stand", NOW)
+Check(C.DB().laters == 0 and C.Quiet(NOW + 2 * 60) and not C.Quiet(NOW + 4 * 60), "done: Later count reset, 3 min gap before the next one")
+Check(C.Later(nil, NOW) == 20, "after a quest is done Later starts at 20 again")
+C.DB().quietUntil = 0
 Report("core_test")

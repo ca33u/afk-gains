@@ -56,7 +56,11 @@ end
 
 C.MAX_RANK = 300
 C.XP_PER_RANK = 10
-C.SNOOZE = 10    -- minutes for "Later"
+C.SNOOZE = 10    -- minutes for a single quest put off (Snooze)
+-- "Later" quiets every reminder, not just that one, and each "Later" in a
+-- row makes the quiet longer; doing a quest starts the count again.
+C.QUIET = { 20, 40, 60 }
+C.GAP = 3        -- minutes between two reminders, so they never come in a row
 C.MEAL_GAP = 180 -- minutes before a meal can be logged again
 C.MISS_DAYS = 3  -- days a ring stays open before its goal shrinks
 
@@ -78,6 +82,8 @@ function C.DB()
 	db.last = db.last or {}     -- timer start per quest
 	db.doneAt = db.doneAt or {} -- last time each quest was done
 	db.snooze = db.snooze or {}
+	db.quietUntil = db.quietUntil or 0 -- no reminder pops up before this
+	db.laters = db.laters or 0         -- "Later" pressed this many times in a row
 	db.meals = db.meals or {}
 	db.slots = db.slots or {}
 	db.used = db.used or {}
@@ -282,7 +288,8 @@ function C.Soon(now, minutes)
 	C.Roll(now)
 	local out = {}
 	for _, q in ipairs(C.QUESTS) do
-		if not q.bonus and not C.DB().paused and not C.Locked(q.key, now) then
+		local snoozed = (C.DB().snooze[q.key] or 0) > now
+		if not q.bonus and not snoozed and not C.DB().paused and not C.Locked(q.key, now) then
 			local m = C.MinutesLeft(q.key, now)
 			if m and m <= minutes then
 				if not q.windows or C.Window(q, now) then
@@ -314,6 +321,8 @@ function C.Complete(key, now)
 	db.last[key] = now
 	db.doneAt[key] = now
 	db.snooze[key] = nil
+	db.laters = 0
+	C.Hush(now, C.GAP)
 	db.today[key] = true
 	if q.windows then
 		local w = C.Window(q, now)
@@ -338,6 +347,30 @@ end
 
 function C.Snooze(key, now, minutes)
 	C.DB().snooze[key] = now + (minutes or C.SNOOZE) * 60
+end
+
+-- No reminder pops up for `minutes` (keeps a longer quiet already set).
+function C.Hush(now, minutes)
+	local db = C.DB()
+	db.quietUntil = math.max(db.quietUntil or 0, now + minutes * 60)
+end
+
+-- True while reminders must not pop up.
+function C.Quiet(now)
+	return (C.DB().quietUntil or 0) > now
+end
+
+-- "Later" on a reminder: that quest and every other one wait. 20 min the
+-- first time, 40 the second time in a row, then an hour. Returns minutes.
+function C.Later(key, now)
+	local db = C.DB()
+	db.laters = math.min((db.laters or 0) + 1, #C.QUIET)
+	local m = C.QUIET[db.laters]
+	if key and C.byKey[key] then
+		C.Snooze(key, now, m)
+	end
+	C.Hush(now, m)
+	return m
 end
 
 -- 0..1 for each ring today

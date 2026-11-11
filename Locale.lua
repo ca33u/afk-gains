@@ -79,6 +79,7 @@ local L = {
 		["Click: quests  ·  Drag: move"] = "Клик: квесты  ·  Тяни: переместить",
 		["Reminders paused."] = "Напоминания на паузе.",
 		["Reminders back on."] = "Напоминания снова включены.",
+		["Reminders quiet for %d min."] = "Напоминания молчат %d мин.",
 		["Commands: /gains show | pause | test | every <quest> <min> | off <quest> | on <quest>"] = "Команды: /gains show | pause | test | every <квест> <мин> | off <квест> | on <квест>",
 		["Quests: stand, pushups, squats, water, meal, pet, read, breathe"] = "Квесты: stand, pushups, squats, water, meal, pet, read, breathe",
 		["%s: every %d min"] = "%s: каждые %d мин",
