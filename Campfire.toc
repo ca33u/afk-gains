@@ -9,6 +9,7 @@
 ## IconTexture: Interface\AddOns\Campfire\Media\icon
 ## Category: Miscellaneous
 ## SavedVariables: CampfireDB
+## X-Wago-ID: nGv94WKx
 
 Locale.lua
 Core.lua
