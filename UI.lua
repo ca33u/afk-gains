@@ -119,7 +119,7 @@ function U.UpdateRow(r, now)
 		else
 			when = ""
 		end
-	elseif q.bonus then
+	elseif q.bonus or (q.optIn and not db.used[r.key]) then
 		when = "|cffffd100" .. T("Bonus") .. "|r"
 	elseif m == 0 then
 		when = "|cffffd100" .. T("now") .. "|r"
@@ -734,6 +734,6 @@ SlashCmdList.AFKGAINS = function(msg)
 		U.RefreshAll()
 	else
 		print(P .. T("Commands: /gains show | pause | test | every <quest> <min> | off <quest> | on <quest>"))
-		print(P .. T("Quests: stand, pushups, squats, water, meal, read, breathe"))
+		print(P .. T("Quests: stand, pushups, squats, water, meal, pet, read, breathe"))
 	end
 end

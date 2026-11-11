@@ -30,7 +30,8 @@ C.RINGS = {
 }
 
 -- every:   minutes between reminders (and before it can be done again)
--- windows: local hours (meals)
+-- windows: local hours (meals, pet); once per window
+-- optIn:   only reminded after you have ticked it once (not everyone has a pet)
 -- daily:   once a day, `after` minutes into your session
 -- bonus:   never reminded on its own; extra experience when you do it
 -- sit:     seconds the hero sits by the fire while you go and do it
@@ -40,7 +41,9 @@ C.QUESTS = {
 	{ key = "pushups", ring = "move", points = 1, xp = 12, every = 60, bonus = true, icon = "Interface\\Icons\\Ability_Warrior_Charge" },
 	{ key = "squats", ring = "move", points = 1, xp = 12, every = 60, bonus = true, icon = "Interface\\Icons\\Ability_Warrior_Revenge" },
 	{ key = "water", ring = "fuel", points = 1, xp = 4, every = 90, sit = 30, icon = "Interface\\Icons\\INV_Drink_07" },
-	{ key = "meal", ring = "fuel", points = 2, xp = 10, sit = 900, windows = { { 8, 11 }, { 13, 15 }, { 18, 21 } }, icon = "Interface\\Icons\\INV_Misc_Food_15" },
+	{ key = "meal", ring = "fuel", points = 2, xp = 10, sit = 900, gap = 180, windows = { { 8, 11 }, { 13, 15 }, { 18, 21 } }, icon = "Interface\\Icons\\INV_Misc_Food_15" },
+	-- for those who have a pet: silent until you tick it once, then reminded
+	{ key = "pet", ring = "fuel", points = 1, xp = 8, sit = 120, gap = 240, optIn = true, windows = { { 7, 11 }, { 17, 22 } }, icon = "Interface\\Icons\\Ability_Hunter_BeastTraining" },
 	{ key = "read", ring = "mind", points = 2, xp = 15, daily = true, after = 60, sit = 600, icon = "Interface\\Icons\\INV_Misc_Book_09" },
 	{ key = "breathe", ring = "mind", points = 1, xp = 8, daily = true, after = 30, guided = 60, icon = "Interface\\Icons\\Spell_Nature_Sleep" },
 	{ key = "breathe5", ring = "mind", points = 1, xp = 15, daily = true, bonus = true, guided = 240, icon = "Interface\\Icons\\Spell_Holy_MindSooth" },
@@ -76,6 +79,8 @@ function C.DB()
 	db.doneAt = db.doneAt or {} -- last time each quest was done
 	db.snooze = db.snooze or {}
 	db.meals = db.meals or {}
+	db.slots = db.slots or {}
+	db.used = db.used or {}
 	db.off = db.off or {}
 	db.every = db.every or {}
 	db.points = db.points or {}
@@ -129,7 +134,7 @@ function C.Roll(now)
 			db.streak, db.grace = 0, nil
 		end
 	end
-	db.day, db.points, db.closed, db.meals, db.today = today, {}, {}, {}, {}
+	db.day, db.points, db.closed, db.meals, db.today, db.slots = today, {}, {}, {}, {}, {}
 	return true
 end
 
@@ -155,15 +160,29 @@ function C.Every(q)
 	return type(v) == "number" and v > 0 and v or q.every
 end
 
--- The meal window you are in now (index), or nil.
-function C.MealWindow(now)
+-- The window of quest `q` you are in now (index), or nil.
+function C.Window(q, now)
 	local h = C.clock.hour(now)
-	for i, w in ipairs(C.byKey.meal.windows) do
+	for i, w in ipairs(q.windows or {}) do
 		if h >= w[1] and h < w[2] then
 			return i
 		end
 	end
 	return nil
+end
+
+function C.MealWindow(now)
+	return C.Window(C.byKey.meal, now)
+end
+
+-- Which windows of a quest are done today.
+local function Slots(key)
+	local db = C.DB()
+	if key == "meal" then
+		return db.meals
+	end
+	db.slots[key] = db.slots[key] or {}
+	return db.slots[key]
 end
 
 -- Done and not yet ready again: the tick stays on, the button is locked
@@ -182,8 +201,8 @@ function C.Locked(key, now)
 		return false
 	end
 	if q.windows then
-		local w = C.MealWindow(now)
-		return (w and db.meals[w]) or now - at < C.MEAL_GAP * 60
+		local w = C.Window(q, now)
+		return (w and Slots(key)[w]) or now - at < (q.gap or C.MEAL_GAP) * 60
 	end
 	return now - at < C.Every(q) * 60
 end
@@ -194,12 +213,15 @@ function C.IsDue(key, now)
 	if not q or q.bonus or db.off[key] or db.paused then
 		return false
 	end
+	if q.optIn and not db.used[key] then
+		return false
+	end
 	if (db.snooze[key] or 0) > now or C.Locked(key, now) then
 		return false
 	end
 	if q.windows then
-		local w = C.MealWindow(now)
-		return w ~= nil and not db.meals[w]
+		local w = C.Window(q, now)
+		return w ~= nil and not Slots(key)[w]
 	end
 	if q.daily then
 		return now - (C.session or now) >= (q.after or 0) * 60
@@ -233,7 +255,7 @@ function C.MinutesLeft(key, now)
 		end
 		local h = C.clock.hour(now)
 		for i, w in ipairs(q.windows) do
-			if h < w[1] and not db.meals[i] then
+			if h < w[1] and not Slots(key)[i] then
 				return (w[1] - h) * 60
 			end
 		end
@@ -263,7 +285,7 @@ function C.Soon(now, minutes)
 		if not q.bonus and not C.DB().paused and not C.Locked(q.key, now) then
 			local m = C.MinutesLeft(q.key, now)
 			if m and m <= minutes then
-				if not q.windows or C.MealWindow(now) then
+				if not q.windows or C.Window(q, now) then
 					out[#out + 1] = q.key
 				end
 			end
@@ -294,10 +316,13 @@ function C.Complete(key, now)
 	db.snooze[key] = nil
 	db.today[key] = true
 	if q.windows then
-		local w = C.MealWindow(now)
+		local w = C.Window(q, now)
 		if w then
-			db.meals[w] = true
+			Slots(key)[w] = true
 		end
+	end
+	if q.optIn then
+		db.used[key] = true -- from now on it is reminded
 	end
 	db.points[q.ring] = (db.points[q.ring] or 0) + q.points
 	db.xp = db.xp + q.xp

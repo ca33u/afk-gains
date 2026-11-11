@@ -42,6 +42,17 @@ HOUR = 18
 NOW = NOW + 4 * 3600
 Check(Has(C.Due(NOW), "meal") and not C.Locked("meal", NOW), "dinner is a new window")
 HOUR = 16
+-- feeding a pet: silent until ticked once, then twice a day
+HOUR = 8
+Check(not Has(C.Due(NOW), "pet"), "pet: not reminded before you have ever ticked it")
+C.Complete("pet", NOW)
+Check(C.Locked("pet", NOW) and C.DB().used.pet, "pet fed: ticked, and from now on reminded")
+HOUR = 18
+local later = NOW + 5 * 3600
+Check(Has(C.Due(later), "pet"), "evening: feed the pet again")
+HOUR = 13
+Check(not Has(C.Due(later), "pet"), "between windows: nothing")
+HOUR = 16
 -- natural pauses
 local soon = C.Soon(NOW, 15)
 Check(not Has(soon, "pushups"), "pauses never offer bonus quests")

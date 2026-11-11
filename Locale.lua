@@ -56,6 +56,9 @@ local L = {
 		["Your hero has walked %s steps today. And you?"] = "Твой герой прошёл сегодня %s шагов. А ты?",
 		["Your hero's steps today"] = "Шаги героя сегодня",
 		["All time"] = "Всего",
+		["Feed your pet"] = "Покорми питомца",
+		["Your hero never forgets to feed their pet. Feed yours too."] = "Твой герой не забывает кормить питомца. Покорми и своего.",
+		["Feed Pet for your hunter's pet, and a real bowl for yours."] = "«Покормить питомца» для питомца охотника и настоящую миску для своего.",
 		-- toast and widget
 		["Done"] = "Готово",
 		["Later"] = "Позже",
@@ -76,7 +79,7 @@ local L = {
 		["Reminders paused."] = "Напоминания на паузе.",
 		["Reminders back on."] = "Напоминания снова включены.",
 		["Commands: /gains show | pause | test | every <quest> <min> | off <quest> | on <quest>"] = "Команды: /gains show | pause | test | every <квест> <мин> | off <квест> | on <квест>",
-		["Quests: stand, pushups, squats, water, meal, read, breathe"] = "Квесты: stand, pushups, squats, water, meal, read, breathe",
+		["Quests: stand, pushups, squats, water, meal, pet, read, breathe"] = "Квесты: stand, pushups, squats, water, meal, pet, read, breathe",
 		["%s: every %d min"] = "%s: каждые %d мин",
 		["Today"] = "Сегодня",
 	},
@@ -95,6 +98,7 @@ ns.TEXT = {
 	water = { "Drink a glass of water", "Your hero drinks to restore mana. So should you." },
 	meal = { "Time to eat", "Set your hero by the fire with food: Well Fed for both of you." },
 	read = { "Read today", "At least 5 pages, the rest is up to you. Your hero can wait at the inn." },
+	pet = { "Feed your pet", "Your hero never forgets to feed their pet. Feed yours too." },
 	breathe = { "Breathe for a minute", "Sit your hero by the fire and sit with them: in through the nose, a long slow breath out." },
 	breathe5 = { "Bonus: 4 more minutes", "Extra experience. Only if you feel like it." },
 }

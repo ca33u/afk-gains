@@ -12,6 +12,7 @@ While you're in game, AFK Gains hands out small real-life quests every now and t
 | Bonus: 10 push-ups or 10 squats | optional, once an hour, more experience | Move |
 | Drink a glass of water | every 1.5 hours | Fuel |
 | Time to eat | breakfast 8–11, lunch 13–15, dinner 18–21 | Fuel |
+| Feed your pet (only once you have ticked it the first time) | morning 7–11, evening 17–22 | Fuel |
 | Read today: at least 5 pages | once a day, after an hour of play | Mind |
 | Breathe for a minute: a guide circle, 4 s in, 6 s out | once a day | Mind |
 | Bonus: 4 more minutes of breathing | optional, more experience | Mind |

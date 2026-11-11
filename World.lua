@@ -113,6 +113,11 @@ function W.Hint(key)
 		if item then
 			return string.format(T("You have %s in your bags: share a drink with your hero."), item)
 		end
+	elseif key == "pet" then
+		local _, class = Safe(UnitClass, "player")
+		if class == "HUNTER" then
+			return T("Feed Pet for your hunter's pet, and a real bowl for yours.")
+		end
 	elseif key == "meal" then
 		if W.HasAura("food") then
 			return T("Your hero is eating. How about you?")
