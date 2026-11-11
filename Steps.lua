@@ -1,5 +1,5 @@
 --[[
-  Campfire steps: a pedometer for your hero.
+  AFK Gains steps: a pedometer for your hero.
 
   Counts the steps your hero takes on foot (walking, running, swimming);
   flights and mounts do not count. A step is about 0.76 m and a yard
@@ -88,7 +88,7 @@ driver:SetScript("OnUpdate", function(_, elapsed)
 	local m = ST.Add(speed * dt)
 	if m then
 		local text = string.format(T("Your hero has walked %s steps today. And you?"), ST.Format(m))
-		print("|cffff9a3cCampfire|r " .. text)
+		print("|cffff9a3cAFK Gains|r " .. text)
 		if RaidNotice_AddMessage and RaidWarningFrame then
 			pcall(RaidNotice_AddMessage, RaidWarningFrame, text, { r = 1, g = 0.6, b = 0.24 })
 		end

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Draws the ring textures for the Campfire widget (no extra libraries).
+Draws the ring textures for the AFK Gains widget (no extra libraries).
 
     python3 -I tools/rings.py Media/Rings
 

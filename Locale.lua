@@ -1,5 +1,5 @@
 --[[
-  Campfire: translations. English text is the key; other languages map it.
+  AFK Gains: translations. English text is the key; other languages map it.
 ]]
 
 local _, ns = ...
@@ -75,7 +75,7 @@ local L = {
 		["Click: quests  ·  Drag: move"] = "Клик: квесты  ·  Тяни: переместить",
 		["Reminders paused."] = "Напоминания на паузе.",
 		["Reminders back on."] = "Напоминания снова включены.",
-		["Commands: /campfire show | pause | test | every <quest> <min> | off <quest> | on <quest>"] = "Команды: /campfire show | pause | test | every <квест> <мин> | off <квест> | on <квест>",
+		["Commands: /gains show | pause | test | every <quest> <min> | off <quest> | on <quest>"] = "Команды: /gains show | pause | test | every <квест> <мин> | off <квест> | on <квест>",
 		["Quests: stand, pushups, squats, water, meal, read, breathe"] = "Квесты: stand, pushups, squats, water, meal, read, breathe",
 		["%s: every %d min"] = "%s: каждые %d мин",
 		["Today"] = "Сегодня",

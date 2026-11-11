@@ -1,5 +1,5 @@
 --[[
-  Campfire core: small real-life quests while you play, three daily rings
+  AFK Gains core: small real-life quests while you play, three daily rings
   and a "profession" of your own that levels as you complete them.
 
   Built on what research says works for habits:
@@ -69,8 +69,8 @@ C.clock = {
 ------------------------------------------------------------------------
 
 function C.DB()
-	CampfireDB = type(CampfireDB) == "table" and CampfireDB or {}
-	local db = CampfireDB
+	AFKGainsDB = type(AFKGainsDB) == "table" and AFKGainsDB or {}
+	local db = AFKGainsDB
 	db.xp = db.xp or 0
 	db.last = db.last or {}     -- timer start per quest
 	db.doneAt = db.doneAt or {} -- last time each quest was done

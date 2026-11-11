@@ -1,16 +1,16 @@
 --[[
-  Campfire UI: three rings you can drag anywhere (your level in the middle),
+  AFK Gains UI: three rings you can drag anywhere (your level in the middle),
   a reminder toast at the top of the screen, and the quest list on click.
 
   Reminders come at natural pauses of the game when they are due soon:
   a flight, arriving at an inn or a city, leaving a dungeon, your hero
   sitting down to eat or drink. A timer is the fallback. Never in combat.
 
-  /campfire                 show or hide the rings
-  /campfire pause           pause / resume reminders
-  /campfire test            show a reminder now
-  /campfire every water 60  change how often a quest comes up
-  /campfire off water       turn a quest off (on to bring it back)
+  /gains                 show or hide the rings
+  /gains pause           pause / resume reminders
+  /gains test            show a reminder now
+  /gains every water 60  change how often a quest comes up
+  /gains off water       turn a quest off (on to bring it back)
 ]]
 
 local _, ns = ...
@@ -20,7 +20,7 @@ local C = ns.Core
 local U = {}
 ns.UI = U
 
-local P = "|cffff9a3cCampfire|r "
+local P = "|cffff9a3cAFK Gains|r "
 local BACKDROP = BackdropTemplateMixin and "BackdropTemplate" or nil
 
 U.SOON = 15 -- minutes: at a natural pause, bring forward what is due this soon
@@ -142,7 +142,7 @@ end
 
 local SIZE = 84
 local STEPS = 12
-local RING_PATH = "Interface\\AddOns\\Campfire\\Media\\Rings\\"
+local RING_PATH = "Interface\\AddOns\\AFKGains\\Media\\Rings\\"
 local LEVEL_FONT = "Fonts\\MORPHEUS.TTF"
 local widget
 
@@ -155,7 +155,7 @@ function U.ArcStep(p)
 end
 
 local function BuildRings()
-	widget = CreateFrame("Button", "CampfireRings", UIParent)
+	widget = CreateFrame("Button", "AFKGainsRings", UIParent)
 	widget:SetSize(SIZE, SIZE)
 	widget:SetFrameStrata("MEDIUM")
 	widget:SetClampedToScreen(true)
@@ -184,7 +184,7 @@ local function BuildRings()
 	widget.level:SetPoint("CENTER", 0, -1)
 	widget:SetScript("OnEnter", function(self)
 		GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT")
-		GameTooltip:AddLine("|cffff9a3cCampfire|r  " .. T("Today"))
+		GameTooltip:AddLine("|cffff9a3cAFK Gains|r  " .. T("Today"))
 		for _, r in ipairs(C.RINGS) do
 			local _, have, goal = C.Progress(r.key)
 			GameTooltip:AddDoubleLine(RingName(r.key), have .. "/" .. goal, r.color[1], r.color[2], r.color[3], 1, 1, 1)
@@ -239,7 +239,7 @@ end
 local list
 
 local function BuildList()
-	list = CreateFrame("Frame", "CampfireList", UIParent, BACKDROP)
+	list = CreateFrame("Frame", "AFKGainsList", UIParent, BACKDROP)
 	list:SetSize(320, 36 + #C.QUESTS * 30)
 	list:SetFrameStrata("DIALOG")
 	list:SetClampedToScreen(true)
@@ -261,7 +261,7 @@ local function BuildList()
 	end
 	list:Hide()
 	if UISpecialFrames then
-		table.insert(UISpecialFrames, "CampfireList")
+		table.insert(UISpecialFrames, "AFKGainsList")
 	end
 end
 
@@ -307,7 +307,7 @@ local function Button(parent, w)
 end
 
 local function BuildToast()
-	toast = CreateFrame("Frame", "CampfireToast", UIParent, BACKDROP)
+	toast = CreateFrame("Frame", "AFKGainsToast", UIParent, BACKDROP)
 	toast:SetSize(380, 74)
 	toast:SetPoint("TOP", UIParent, "TOP", 0, -110)
 	toast:SetFrameStrata("DIALOG")
@@ -512,7 +512,7 @@ function U.Guide(key)
 	end
 	if not toast.breath then
 		toast.breath = toast:CreateTexture(nil, "OVERLAY")
-		toast.breath:SetTexture("Interface\\AddOns\\Campfire\\Media\\Rings\\fuel_12")
+		toast.breath:SetTexture("Interface\\AddOns\\AFKGains\\Media\\Rings\\fuel_12")
 		toast.breath:SetPoint("CENTER", toast.icon, "CENTER")
 	end
 	toast.icon:SetAlpha(0.15)
@@ -668,10 +668,10 @@ pcall(ev.RegisterUnitEvent or ev.RegisterEvent, ev, "UNIT_AURA", "player")
 -- Commands
 ------------------------------------------------------------------------
 
-SLASH_CAMPFIRE1 = "/campfire"
-SLASH_CAMPFIRE2 = "/cf"
+SLASH_AFKGAINS1 = "/gains"
+SLASH_AFKGAINS2 = "/afkgains"
 SlashCmdList = SlashCmdList or {}
-SlashCmdList.CAMPFIRE = function(msg)
+SlashCmdList.AFKGAINS = function(msg)
 	local db = C.DB()
 	local cmd, a, b = (msg or ""):lower():match("^%s*(%S*)%s*(%S*)%s*(%S*)")
 	if cmd == "" or cmd == "show" then
@@ -690,7 +690,7 @@ SlashCmdList.CAMPFIRE = function(msg)
 		print(P .. T(ns.TEXT[a][1]) .. ": " .. T(cmd))
 		U.RefreshAll()
 	else
-		print(P .. T("Commands: /campfire show | pause | test | every <quest> <min> | off <quest> | on <quest>"))
+		print(P .. T("Commands: /gains show | pause | test | every <quest> <min> | off <quest> | on <quest>"))
 		print(P .. T("Quests: stand, pushups, squats, water, meal, read, breathe"))
 	end
 end

@@ -1,5 +1,5 @@
 --[[
-  Campfire world: ties the reminders to what your hero really has.
+  AFK Gains world: ties the reminders to what your hero really has.
 
     drink or food in your bags   "You have Ice Cold Milk: share a drink"
     Basic Campfire known         "Light a Basic Campfire and sit by it"

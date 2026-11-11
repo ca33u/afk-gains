@@ -1,4 +1,4 @@
--- Minimal WoW API stand-ins for running Campfire outside the game.
+-- Minimal WoW API stand-ins for running AFK Gains outside the game.
 local total, fails = 0, 0
 function Check(cond, msg)
 	total = total + 1
@@ -56,5 +56,5 @@ C_Timer = { After = function(_, fn) end }
 NS = {}
 function LoadFile(path)
 	local chunk = assert(loadfile(path))
-	chunk("Campfire", NS)
+	chunk("AFKGains", NS)
 end
