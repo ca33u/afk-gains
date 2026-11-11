@@ -1,41 +1,43 @@
+English · [Русский](README.ru.md)
+
 # AFK Gains
 
-Качайте себя, пока играете. Аддон для WoW Forever от [addicted](https://addicted.sh).
+Level yourself up while you play. A WoW Forever addon by [addicted](https://addicted.sh).
 
-Пока вы в игре, AFK Gains время от времени выдаёт маленькие жизненные квесты:
+While you're in game, AFK Gains hands out small real-life quests every now and then:
 
-| Квест | Как часто | Кольцо |
+| Quest | How often | Ring |
 |---|---|---|
-| Встань на минуту (пройдись, потянись, посмотри в окно) | раз в 45 минут | Движение |
-| Бонус: 10 отжиманий или 10 приседаний | по желанию, раз в час, больше опыта | Движение |
-| Выпей стакан воды | раз в 1,5 часа | Заправка |
-| Пора поесть | завтрак 8–11, обед 13–15, ужин 18–21 | Заправка |
-| Почитай сегодня: хотя бы 5 страниц | раз в день, через час игры | Голова |
-| Подыши минуту: круг-помощник, 4 с вдох, 6 с выдох | раз в день | Голова |
-| Бонус: ещё 4 минуты дыхания | по желанию, больше опыта | Голова |
+| Stand up for a minute (walk around, stretch, look out of the window) | every 45 minutes | Move |
+| Bonus: 10 push-ups or 10 squats | optional, once an hour, more experience | Move |
+| Drink a glass of water | every 1.5 hours | Fuel |
+| Time to eat | breakfast 8–11, lunch 13–15, dinner 18–21 | Fuel |
+| Read today: at least 5 pages | once a day, after an hour of play | Mind |
+| Breathe for a minute: a guide circle, 4 s in, 6 s out | once a day | Mind |
+| Bonus: 4 more minutes of breathing | optional, more experience | Mind |
 
-Напоминания приходят в естественные паузы игры: герой полетел на грифоне, зашёл в таверну или город, вышел из подземелья, сел есть или пить. Таймер остаётся запасным вариантом. В бою напоминаний нет.
+Reminders come during natural pauses in the game: your hero takes a gryphon flight, walks into an inn or a city, leaves a dungeon, sits down to eat or drink. The timer is the fallback. There are no reminders in combat.
 
-Напоминание появляется сверху экрана, с подсказкой из мира игры. Подсказки смотрят, что есть у вашего героя: вода или еда в сумках («У вас есть Родниковая вода: выпейте вместе с героем»), умеет ли он разжечь «Простой костёр», отдыхает ли в таверне. Если герой сам сел пить или есть, а напоминание и так скоро, оно придёт раньше. Кнопки: **Готово**, **Позже** (через 10 минут) и **Сесть**: герой садится у костра, а в окне идёт обратный отсчёт, сколько вам нужно на квест (минута встать, 30 секунд на воду, 15 минут поесть, 10 минут почитать). Вернулись — нажали «Готово». После «Встань» можно взять бонус: отжимания или приседания за дополнительный опыт.
+A reminder appears at the top of the screen with a hint from the game world. The hints look at what your hero has: water or food in the bags ("You have Refreshing Spring Water in your bags: share a drink with your hero"), whether they can light a Basic Campfire, whether they're resting at an inn. If your hero sits down to eat or drink on their own and a reminder is due soon anyway, it comes early. Buttons: **Done**, **Later** (in 10 minutes) and **Sit**: your hero sits down by a campfire, and the window counts down the time you need for the quest (a minute to stand up, 30 seconds for water, 15 minutes to eat, 10 minutes to read). When you're back, press "Done". After "Stand up" you can take a bonus: push-ups or squats for extra experience.
 
-Три маленьких кольца на экране заполняются за день, как в Apple Watch. Закрыли все три, и день засчитан в серию. Один пропущенный день серию не обрывает, только два подряд. Если кольцо несколько дней подряд не закрывается, его цель тихо уменьшается. За каждый квест растёт ваш уровень **Заботы о себе**, от 1 до 300: Ученик, Подмастерье, Умелец, Мастер. Уровень и полоска опыта видны прямо под кольцами, новый уровень объявляется на экране со звуком.
+Three small rings on screen fill up over the day, like on an Apple Watch. Close all three and the day counts toward your streak. One missed day doesn't break the streak, only two in a row. If a ring doesn't close several days in a row, its goal quietly gets smaller. Every quest raises your **Self-care** level, from 1 to 300: Apprentice, Journeyman, Expert, Artisan. The level and experience bar are shown right under the rings, and a new level is announced on screen with a sound.
 
-Уровень виден цифрой в центре колец. Клик по кольцам открывает список квестов: квадратная кнопка отмечает сделанное, и галочка в ней остаётся, пока квест снова не подойдёт. Не сделали — ничего страшного, квест просто подождёт.
+The level is shown as a number in the center of the rings. Click the rings to open the quest list: the square button marks a quest as done, and the check mark stays until the quest is due again. Didn't do it? No big deal, the quest will just wait.
 
-## Шагомер героя
+## Hero step counter
 
-AFK Gains считает шаги вашего героя пешком и вплавь (полёты и маунты не в счёт). Сколько за сегодня и всего, видно при наведении на кольца. Каждые 10 000 шагов герой спрашивает: «А ты?»
+AFK Gains counts your hero's steps on foot and swimming (flights and mounts don't count). Hover over the rings to see today's count and the all-time total. Every 10,000 steps your hero asks: "And you?"
 
-## Команды
+## Commands
 
-- `/gains`: показать или спрятать кольца
-- `/gains pause`: пауза напоминаний
-- `/gains test`: показать напоминание сейчас
-- `/gains every water 60`: как часто напоминать (в минутах)
-- `/gains off water`, `/gains on water`: выключить или вернуть квест
+- `/gains`: show or hide the rings
+- `/gains pause`: pause reminders
+- `/gains test`: show a reminder now
+- `/gains every water 60`: how often to remind (in minutes)
+- `/gains off water`, `/gains on water`: turn a quest off or back on
 
-Квесты: stand, pushups, squats, water, meal, read, breathe.
+Quests: stand, pushups, squats, water, meal, read, breathe.
 
-## Лицензия
+## License
 
 MIT

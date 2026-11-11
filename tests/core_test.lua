@@ -135,8 +135,13 @@ Check(NS.UI.ArcStep(0) == 0 and NS.UI.ArcStep(0.01) == 1 and NS.UI.ArcStep(0.5) 
 LoadFile("Steps.lua")
 local STP = NS.Steps
 C.DB().steps = nil
-Check(STP.Add(100) == nil and math.floor(STP.DB().today) == 120, "100 yards on foot = 120 steps")
-Check(STP.Add(8300) == 10000, "10 000 steps: the hero asks how you are doing")
+Check(math.floor(STP.StepsFor(100, 2.5)) == 120, "walking: 100 yards = 120 steps")
+Check(math.floor(STP.StepsFor(100, 7)) == 55, "running: 100 yards = 55 strides")
+Check(STP.Add(120) == nil and math.floor(STP.DB().today) == 120, "steps added")
+Check(STP.Add(9900) == 10000, "10 000 steps: the hero asks how you are doing")
+local before = STP.DB().today
+STP.Started(); STP.Stopped()
+Check(STP.DB().today - before == 1, "a single tap counts as one step")
 Check(STP.Format(12345) == "12 345" and STP.Format(999) == "999", "steps formatted")
 function UnitOnTaxi() return true end
 Check(STP.OnFoot() == false, "flights do not count")

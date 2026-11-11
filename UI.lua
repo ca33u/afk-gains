@@ -240,7 +240,8 @@ local list
 
 local function BuildList()
 	list = CreateFrame("Frame", "AFKGainsList", UIParent, BACKDROP)
-	list:SetSize(320, 36 + #C.QUESTS * 30)
+	local ROW, HEAD = 30, 24
+	list:SetSize(320, 30 + #C.QUESTS * ROW + #C.RINGS * HEAD)
 	list:SetFrameStrata("DIALOG")
 	list:SetClampedToScreen(true)
 	-- the game's own dialog frame: dark parchment with the gold border
@@ -252,24 +253,66 @@ local function BuildList()
 			insets = { left = 11, right = 12, top = 12, bottom = 11 },
 		})
 	end
-	list.rows = {}
-	for i, q in ipairs(C.QUESTS) do
-		local row = U.NewRow(list, q, "GameFontHighlightSmall")
-		row:SetPoint("TOPLEFT", 18, -18 - (i - 1) * 30)
-		row:SetPoint("RIGHT", -16, 0)
-		list.rows[i] = row
+	-- quests grouped under a small heading per ring, in the ring's colour,
+	-- with the ring's count on the right
+	list.rows, list.heads = {}, {}
+	local y = -16
+	for _, ring in ipairs(C.RINGS) do
+		local h = list:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+		h:SetPoint("TOPLEFT", 18, y - 6)
+		h:SetTextColor(ring.color[1], ring.color[2], ring.color[3])
+		local count = list:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+		count:SetPoint("TOPRIGHT", -18, y - 6)
+		local line = list:CreateTexture(nil, "ARTWORK")
+		line:SetHeight(1)
+		line:SetPoint("LEFT", h, "RIGHT", 6, 0)
+		line:SetPoint("RIGHT", count, "LEFT", -6, 0)
+		line:SetColorTexture(ring.color[1], ring.color[2], ring.color[3], 0.35)
+		list.heads[#list.heads + 1] = { ring = ring.key, text = h, count = count }
+		y = y - HEAD
+		for _, q in ipairs(C.QUESTS) do
+			if q.ring == ring.key then
+				local row = U.NewRow(list, q, "GameFontHighlightSmall")
+				row:SetPoint("TOPLEFT", 18, y)
+				row:SetPoint("RIGHT", -16, 0)
+				list.rows[#list.rows + 1] = row
+				y = y - ROW
+			end
+		end
 	end
+	-- an obvious way out: the game's red close button in the corner
+	local close = CreateFrame("Button", nil, list, "UIPanelCloseButton")
+	close:SetPoint("TOPRIGHT", -4, -4)
+	close:SetScript("OnClick", function() list:Hide() end)
 	list:Hide()
 	if UISpecialFrames then
 		table.insert(UISpecialFrames, "AFKGainsList")
 	end
 end
 
+-- A click anywhere outside the list (and outside the rings) closes it.
+local outside = CreateFrame("Frame")
+outside:SetScript("OnEvent", function()
+	if not (list and list:IsShown()) then
+		return
+	end
+	local over = MouseIsOver and (MouseIsOver(list) or (widget and MouseIsOver(widget)))
+	if not over then
+		list:Hide()
+	end
+end)
+pcall(outside.RegisterEvent, outside, "GLOBAL_MOUSE_DOWN")
+
 function U.RefreshList()
 	if not (list and list:IsShown()) then
 		return
 	end
 	local now = Now()
+	for _, h in ipairs(list.heads) do
+		local _, have, goal = C.Progress(h.ring)
+		h.text:SetText(RingName(h.ring))
+		h.count:SetText(have .. "/" .. goal)
+	end
 	for _, row in ipairs(list.rows) do
 		U.UpdateRow(row, now)
 	end
