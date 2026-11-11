@@ -90,8 +90,21 @@ function U.NewRow(parent, q, font)
 	-- the mouse release itself does the work, so it works however the
 	-- client routes clicks to addon buttons
 	r.check:SetScript("OnMouseUp", function(self, button)
-		if button == "LeftButton" and self:IsMouseOver() and not C.Locked(q.key, Now()) then
+		if button ~= "LeftButton" then
+			return
+		end
+		-- any error is printed to chat instead of being swallowed by the game
+		local ok, err = xpcall(function()
+			if C.Locked(q.key, Now()) then
+				print(P .. T("Already done: it comes round again later."))
+				return
+			end
 			U.Complete(q.key)
+		end, function(e)
+			return tostring(e) .. (debugstack and ("\n" .. debugstack(2, 4, 0)) or "")
+		end)
+		if not ok then
+			print(P .. "|cffff5050error:|r " .. tostring(err))
 		end
 	end)
 	r.check:SetScript("OnEnter", function(self)
@@ -293,14 +306,29 @@ local function BuildList()
 	end
 end
 
+-- Is the cursor inside this frame's rectangle? Plain geometry: the game's
+-- "mouse over" checks miss frames that do not take the mouse themselves.
+function U.CursorIn(frame)
+	if not (frame and frame.IsShown and frame:IsShown() and GetCursorPosition) then
+		return false
+	end
+	local left, right, top, bottom = frame:GetLeft(), frame:GetRight(), frame:GetTop(), frame:GetBottom()
+	if not (left and right and top and bottom) then
+		return false
+	end
+	local x, y = GetCursorPosition()
+	local scale = frame:GetEffectiveScale() or 1
+	x, y = x / scale, y / scale
+	return x >= left and x <= right and y >= bottom and y <= top
+end
+
 -- A click anywhere outside the list (and outside the rings) closes it.
 local outside = CreateFrame("Frame")
 outside:SetScript("OnEvent", function()
 	if not (list and list:IsShown()) then
 		return
 	end
-	local over = MouseIsOver and (MouseIsOver(list) or (widget and MouseIsOver(widget)))
-	if not over then
+	if not (U.CursorIn(list) or U.CursorIn(widget)) then
 		list:Hide()
 	end
 end)

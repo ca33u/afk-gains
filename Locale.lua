@@ -59,6 +59,7 @@ local L = {
 		["Feed your pet"] = "Покорми питомца",
 		["Your hero never forgets to feed their pet. Feed yours too."] = "Твой герой не забывает кормить питомца. Покорми и своего.",
 		["Feed Pet for your hunter's pet, and a real bowl for yours."] = "«Покормить питомца» для питомца охотника и настоящую миску для своего.",
+		["Already done: it comes round again later."] = "Уже сделано: квест вернётся позже.",
 		-- toast and widget
 		["Done"] = "Готово",
 		["Later"] = "Позже",

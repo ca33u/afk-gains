@@ -130,6 +130,12 @@ Check(pcall(function()
 end), "toast, bonus offer, list and commands run")
 Check(C.DB().every.water == 45 and C.DB().paused, "commands change settings")
 Check(pcall(NS.UI.BuildRings) and pcall(NS.UI.RefreshRings), "solid rings and level build and refresh")
+local box = StubObj({ GetLeft = function() return 100 end, GetRight = function() return 400 end, GetTop = function() return 500 end, GetBottom = function() return 200 end, GetEffectiveScale = function() return 1 end })
+box._shown = true
+GetCursorPosition = function() return 150, 300 end
+Check(NS.UI.CursorIn(box), "a click inside the list keeps it open")
+GetCursorPosition = function() return 50, 300 end
+Check(not NS.UI.CursorIn(box), "a click outside closes it")
 local b0, p0 = NS.UI.BreathAt(0)
 local b4 = NS.UI.BreathAt(4)
 local b7, p7 = NS.UI.BreathAt(7)
