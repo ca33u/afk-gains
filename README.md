@@ -17,7 +17,7 @@ While you're in game, AFK Gains hands out small real-life quests every now and t
 | Breathe for a minute: a guide circle, 4 s in, 6 s out | once a day | Mind |
 | Bonus: 4 more minutes of breathing | optional, more experience | Mind |
 
-Reminders come during natural pauses in the game: your hero takes a gryphon flight, walks into an inn or a city, leaves a dungeon, sits down to eat or drink. The timer is the fallback. There are no reminders in combat.
+Reminders come during natural pauses in the game: your hero takes a gryphon flight, walks into an inn or a city, leaves a dungeon, sits down to eat or drink. The timer is the fallback. There are no reminders in combat or inside a dungeon, raid or battleground: whatever came due waits until you are out.
 
 A reminder appears at the top of the screen with a hint from the game world. The hints look at what your hero has: water or food in the bags ("You have Refreshing Spring Water in your bags: share a drink with your hero"), whether they can light a Basic Campfire, whether they're resting at an inn. If your hero sits down to eat or drink on their own and a reminder is due soon anyway, it comes early. Buttons: **Done**, **Later** (in 10 minutes) and **Sit**: your hero sits down by a campfire, and the window counts down the time you need for the quest (a minute to stand up, 30 seconds for water, 15 minutes to eat, 10 minutes to read). When you're back, press "Done". After "Stand up" you can take a bonus: push-ups or squats for extra experience.
 

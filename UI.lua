@@ -4,7 +4,9 @@
 
   Reminders come at natural pauses of the game when they are due soon:
   a flight, arriving at an inn or a city, leaving a dungeon, your hero
-  sitting down to eat or drink. A timer is the fallback. Never in combat.
+  sitting down to eat or drink. A timer is the fallback. Never in combat,
+  never inside a dungeon, raid or battleground: what came due waits until
+  you are out.
 
   /gains                 show or hide the rings
   /gains pause           pause / resume reminders
@@ -39,8 +41,17 @@ local function RingName(key)
 	return T(ns.RING_NAME[key] or key)
 end
 
+-- In a dungeon, raid, battleground or arena: no reminders until you are out.
+function U.InInstance()
+	if not IsInInstance then
+		return false
+	end
+	local ok, inside, kind = pcall(IsInInstance)
+	return ok and inside and kind ~= "none" and true or false
+end
+
 local function Busy()
-	return InCombatLockdown and InCombatLockdown()
+	return (InCombatLockdown and InCombatLockdown()) or U.InInstance()
 end
 
 ------------------------------------------------------------------------
@@ -723,6 +734,9 @@ ev:SetScript("OnEvent", function(_, event)
 			C_Timer.After(3, U.Pause) -- out of a dungeon
 		end
 		wasInInstance = inside and true or false
+		if U.InInstance() and toast and toast:IsShown() then
+			toast:Hide() -- a reminder that was up when you zoned in
+		end
 	elseif event == "UNIT_AURA" then
 		local key = ns.World and ns.World.Nudge(Now())
 		-- once per half hour at most, so every sip does not pop it again

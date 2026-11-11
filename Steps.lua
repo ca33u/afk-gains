@@ -86,7 +86,8 @@ local function Milestone(m)
 	if m then
 		local text = string.format(T("Your hero has walked %s steps today. And you?"), ST.Format(m))
 		print("|cffff9a3cAFK Gains|r " .. text)
-		if RaidNotice_AddMessage and RaidWarningFrame then
+		local inside = ns.UI and ns.UI.InInstance and ns.UI.InInstance()
+		if not inside and RaidNotice_AddMessage and RaidWarningFrame then
 			pcall(RaidNotice_AddMessage, RaidWarningFrame, text, { r = 1, g = 0.6, b = 0.24 })
 		end
 	end
