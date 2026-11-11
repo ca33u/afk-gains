@@ -3,7 +3,7 @@
 ## Notes: Level yourself while you play: small real-life quests (stand up, water, meals, a minute of breathing, reading, bonus push-ups and squats), three daily rings and your own Self-care skill.
 ## Notes-ruRU: Качайте себя, пока играете: маленькие жизненные квесты (встать, вода, еда, минута дыхания, чтение, бонусные отжимания и приседания), три кольца на день и свой навык «Забота о себе».
 ## Author: addicted
-## Version: 0.3.0
+## Version: 0.4.0
 ## X-License: MIT
 ## X-Website: https://addicted.sh
 ## IconTexture: Interface\AddOns\AFKGains\Media\icon
