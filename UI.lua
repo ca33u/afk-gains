@@ -68,6 +68,7 @@ function U.NewRow(parent, q, font)
 	-- inside when done (no game button underneath, so nothing shows through)
 	local b = CreateFrame("Button", nil, r)
 	b:SetSize(24, 24)
+	b:EnableMouse(true)
 	b:SetPoint("RIGHT", 0, 0)
 	b.frame = b:CreateTexture(nil, "BACKGROUND")
 	b.frame:SetAllPoints()
@@ -86,8 +87,10 @@ function U.NewRow(parent, q, font)
 	b.tick:SetPoint("CENTER", 1, 1)
 	b.tick:Hide()
 	r.check = b
-	r.check:SetScript("OnClick", function()
-		if not C.Locked(q.key, Now()) then
+	-- the mouse release itself does the work, so it works however the
+	-- client routes clicks to addon buttons
+	r.check:SetScript("OnMouseUp", function(self, button)
+		if button == "LeftButton" and self:IsMouseOver() and not C.Locked(q.key, Now()) then
 			U.Complete(q.key)
 		end
 	end)
