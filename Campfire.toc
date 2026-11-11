@@ -14,4 +14,5 @@
 Locale.lua
 Core.lua
 World.lua
+Steps.lua
 UI.lua

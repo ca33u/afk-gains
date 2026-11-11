@@ -53,6 +53,9 @@ local L = {
 		["The full five minutes is what the study used."] = "Пять минут — столько дышали в исследовании.",
 		["Your hero rests by the fire. Time left: %s"] = "Герой отдыхает у костра. Осталось: %s",
 		["Time is up. Press Done when you are back."] = "Время вышло. Нажми «Готово», когда вернёшься.",
+		["Your hero has walked %s steps today. And you?"] = "Твой герой прошёл сегодня %s шагов. А ты?",
+		["Your hero's steps today"] = "Шаги героя сегодня",
+		["All time"] = "Всего",
 		-- toast and widget
 		["Done"] = "Готово",
 		["Later"] = "Позже",

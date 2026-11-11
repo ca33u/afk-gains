@@ -131,4 +131,14 @@ local doneCalled = false
 Check(pcall(NS.UI.ShowToast, "water") and pcall(NS.UI.Countdown, "water", function() doneCalled = true end), "sit: countdown starts")
 Check(NS.UI.ArcStep(0) == 0 and NS.UI.ArcStep(0.01) == 1 and NS.UI.ArcStep(0.5) == 6 and NS.UI.ArcStep(1) == 12 and NS.UI.ArcStep(2) == 12, "progress picks one of 12 arc pictures")
 
+-- pedometer
+LoadFile("Steps.lua")
+local STP = NS.Steps
+C.DB().steps = nil
+Check(STP.Add(100) == nil and math.floor(STP.DB().today) == 120, "100 yards on foot = 120 steps")
+Check(STP.Add(8300) == 10000, "10 000 steps: the hero asks how you are doing")
+Check(STP.Format(12345) == "12 345" and STP.Format(999) == "999", "steps formatted")
+function UnitOnTaxi() return true end
+Check(STP.OnFoot() == false, "flights do not count")
+UnitOnTaxi = nil
 Report("core_test")
