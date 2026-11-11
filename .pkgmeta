@@ -1,0 +1,11 @@
+package-as: Campfire
+
+ignore:
+  - tests
+  - install.sh
+  - .gitignore
+  - .github
+  - .pkgmeta
+  - Media/logo.png
+  - tools
+  - RELEASING.md

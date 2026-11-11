@@ -1,0 +1,16 @@
+## Interface: 16001
+## Title: |cffff9a3cCampfire|r
+## Notes: Level yourself while you play: small real-life quests (stand up, water, meals, a minute of breathing, reading, bonus push-ups and squats), three daily rings and your own Self-care skill.
+## Notes-ruRU: Качайте себя, пока играете: маленькие жизненные квесты (встать, вода, еда, минута дыхания, чтение, бонусные отжимания и приседания), три кольца на день и свой навык «Забота о себе».
+## Author: addicted
+## Version: 0.1.0
+## X-License: MIT
+## X-Website: https://addicted.sh
+## IconTexture: Interface\AddOns\Campfire\Media\icon
+## Category: Miscellaneous
+## SavedVariables: CampfireDB
+
+Locale.lua
+Core.lua
+World.lua
+UI.lua
