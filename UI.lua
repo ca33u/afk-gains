@@ -241,7 +241,7 @@ local list
 local function BuildList()
 	list = CreateFrame("Frame", "AFKGainsList", UIParent, BACKDROP)
 	local ROW, HEAD = 30, 24
-	list:SetSize(320, 30 + #C.QUESTS * ROW + #C.RINGS * HEAD)
+	list:SetSize(320, 46 + #C.QUESTS * ROW + #C.RINGS * HEAD)
 	list:SetFrameStrata("DIALOG")
 	list:SetClampedToScreen(true)
 	-- the game's own dialog frame: dark parchment with the gold border
@@ -256,7 +256,7 @@ local function BuildList()
 	-- quests grouped under a small heading per ring, in the ring's colour,
 	-- with the ring's count on the right
 	list.rows, list.heads = {}, {}
-	local y = -16
+	local y = -32 -- room for the close button above the first heading
 	for _, ring in ipairs(C.RINGS) do
 		local h = list:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
 		h:SetPoint("TOPLEFT", 18, y - 6)
